@@ -5,7 +5,7 @@ import itertools
 def update():
     import requests
     with open('truth.py', 'wb') as f:
-        f.write(requests.get('https://gist.githubusercontent.com/Ivoah/1abdec420c66e25b9d91fed48a4b8ee3/raw/truth.py').content)
+        f.write(requests.get('https://raw.githubusercontent.com/Ivoah/truth/master/truth.py').content)
 
 operators = {
     '!': lambda a: not a,
