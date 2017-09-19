@@ -13,10 +13,10 @@ operators = {
     '|': lambda a, b: a or b,
     '^': lambda a, b: a ^ b,
     '>': lambda a, b: b if a else True,
-    '<': lambda a, b: a == b
+    '=': lambda a, b: a == b
 }
 
-precedence = ['!', '&', '|', '^', '>', '<', '(', ')']
+precedence = ['!', '&', '|', '^', '>', '=', '(', ')']
 
 def tokenize(string):
     return list(string)
