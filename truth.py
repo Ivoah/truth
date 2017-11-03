@@ -88,12 +88,13 @@ def get_parts(ast):
     return vars, parts
 
 def print_table(table):
-    print('┏━' + '━┯━'.join('━'*len(row) for row in table[0]) + '━┓')
-    print('┃ ' + ' │ '.join(table[0]) + ' ┃')
-    print('┣━' + '━┿━'.join('━'*len(row) for row in table[0]) + '━┫')
+    widths = [max(len(str(table[r][c])) for r in range(len(table))) for c in range(len(table[0]))]
+    print('┏━' + '━┯━'.join('━'*width for width in widths) + '━┓')
+    print('┃ ' + ' │ '.join(f'{col:^{widths[i]}}' for i, col in enumerate(table[0])) + ' ┃')
+    print('┣━' + '━┿━'.join('━'*width for width in widths) + '━┫')
     for row in table[1:]:
-        print('┃ ' + ' │ '.join(f'{col:^{len(table[0][i])}}' for i, col in enumerate(row)) + ' ┃')
-    print('┗━' + '━┷━'.join('━'*len(row) for row in table[0]) + '━┛')
+        print('┃ ' + ' │ '.join(f'{col:^{widths[i]}}' for i, col in enumerate(row)) + ' ┃')
+    print('┗━' + '━┷━'.join('━'*width for width in widths) + '━┛')
 
 if __name__ == '__main__':
     vars = []
