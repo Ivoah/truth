@@ -25,7 +25,7 @@ def infix_to_postfix(tokens):
     out_stack = []
     op_stack = []
 
-    for i, c in enumerate(tokens):
+    for c in tokens:
         if c in operators:
             while len(op_stack) > 0 and precedence.index(op_stack[-1]) < precedence.index(c):
                 out_stack.append(op_stack.pop())
