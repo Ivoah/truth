@@ -99,19 +99,44 @@ def print_table(table):
 if __name__ == '__main__':
     vars = []
     parts = []
+    verbose = False
 
-    for expression in sys.argv[1:] if len(sys.argv) > 1 else (lambda x: input().split())(print('Enter expression(s): ', end = '')):
-        tokens = tokenize(expression)
-        postfix = infix_to_postfix(tokens)
-        ast = postfix_to_ast(postfix)
-        v, p = get_parts(ast)
-        vars.extend(var for var in v if var not in vars)
+    if len(sys.argv) == 1:
+        expression = input('Enter expression: ')
+    elif len(sys.argv) == 2:
+        if sys.argv[1] == '-v':
+            verbose = True
+            expression = input('Enter expression: ')
+        else:
+            expression = sys.argv[1]
+    elif len(sys.argv) == 3:
+        verbose = True
+        if sys.argv[1] == '-v':
+            expression = sys.argv[2]
+        elif sys.argv[2] == '-v':
+            expression = sys.argv[1]
+        else:
+            print('usuck')
+            sys.exit(1)
+    else:
+        print('usuck')
+        sys.exit(1)
+    
+    tokens = tokenize(expression)
+    postfix = infix_to_postfix(tokens)
+    ast = postfix_to_ast(postfix)
+    v, p = get_parts(ast)
+    vars.extend(var for var in v if var not in vars)
+    vars = sorted(vars)
+    if verbose:
         parts.extend(part for part in p if part not in parts)
+    else:
+        parts = [ast]
 
     pparts = list(map(ast_to_infix, parts))
     table = [vars + pparts]
 
-    for prod in itertools.product([True, False], repeat = len(vars)):
-        table.append(['T' if evaluate(expr, {arg: prod[i] for i, arg in enumerate(vars)}) else 'F' for expr in vars + parts])
+    for prod in itertools.product([False, True], repeat = len(vars)):
+        table.append(['1' if evaluate(expression, {arg: prod[i] for i, arg in enumerate(vars)}) else '0' for expression in vars + parts])
 
     print_table(table)
